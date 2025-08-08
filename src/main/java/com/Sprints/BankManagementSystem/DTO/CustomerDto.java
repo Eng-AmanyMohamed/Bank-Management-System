@@ -43,7 +43,7 @@ public class CustomerDto {
     }
 
     public Long getId() {
-        return customer_id;;
+        return customer_id;
     }
 
     public String getName() {
@@ -66,3 +66,4 @@ public class CustomerDto {
         return password;
     }
 }
+
