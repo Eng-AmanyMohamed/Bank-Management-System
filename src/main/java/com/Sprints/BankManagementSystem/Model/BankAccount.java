@@ -25,11 +25,9 @@ public class BankAccount {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    // Transactions where this account is the sender
     @OneToMany(mappedBy = "sender",cascade = CascadeType.ALL)
     private List<Transaction> sentTransactions;
-
-    // Transactions where this account is the receiver
+    
     @OneToMany(mappedBy = "receiver",cascade = CascadeType.ALL)
     private List<Transaction> receivedTransactions;
 
