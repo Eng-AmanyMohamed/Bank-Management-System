@@ -24,7 +24,14 @@ public class Customer {
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
     private List<BankAccount>accounts;
 
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    private List<Transaction>transactions;
+
     public Customer() {
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public void setPassword(String password) {
@@ -80,5 +87,9 @@ public class Customer {
 
     public List<BankAccount> getAccounts() {
         return accounts;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
     }
 }
