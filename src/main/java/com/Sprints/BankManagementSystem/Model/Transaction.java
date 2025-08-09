@@ -23,12 +23,21 @@ public class Transaction {
     @JoinColumn(name = "receiver_account_id")
     private BankAccount receiver;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+
     public Transaction() {
     }
 
 
     public void setTransaction_id(Long transaction_id) {
         this.transaction_id = transaction_id;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public void setType(String type) {
@@ -73,5 +82,9 @@ public class Transaction {
 
     public BankAccount getReceiver() {
         return receiver;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 }
