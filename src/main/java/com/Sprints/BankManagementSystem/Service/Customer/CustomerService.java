@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CustomerService implements ICustomerService{
+public class CustomerService implements ICustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 
@@ -62,5 +62,12 @@ public class CustomerService implements ICustomerService{
             throw new RuntimeException("Customer not found with ID: " + id);
         }
         customerRepository.deleteById(id);
+    }
+
+    @Override
+    public CustomerDto findCustomerByEmail(String email) {
+        Customer customer = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Email is not exists"));
+        return customerMapper.toDTO(customer);
     }
 }

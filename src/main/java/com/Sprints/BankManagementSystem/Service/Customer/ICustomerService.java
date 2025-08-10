@@ -11,4 +11,5 @@ public interface ICustomerService {
     List<CustomerDto> getAllCustomers();
     CustomerDto updateCustomer(Long id, CustomerDto customerDto);
     void deleteCustomer(Long id);
+    CustomerDto findCustomerByEmail(String email);
 }
