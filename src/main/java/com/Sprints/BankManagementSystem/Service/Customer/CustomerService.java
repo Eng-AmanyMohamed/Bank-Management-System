@@ -68,7 +68,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public CustomerDto findCustomerByEmail(String email) {
         Customer customer = customerRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Email is not exists"));
+                .orElseThrow(() -> new DataNotFoundException("Email does not exist!"));
         return customerMapper.toDTO(customer);
     }
 }
