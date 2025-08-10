@@ -1,8 +1,12 @@
 package com.Sprints.BankManagementSystem.DTO;
 
+import jakarta.validation.constraints.*;
+
 public class TransferDto {
         private Long senderAccountId;
+
         private Long receiverAccountId;
+        @Min(1)
         private Double amount;
 
 

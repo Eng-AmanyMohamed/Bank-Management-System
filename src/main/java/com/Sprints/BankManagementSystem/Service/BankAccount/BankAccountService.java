@@ -10,6 +10,7 @@ import com.Sprints.BankManagementSystem.DTO.TransferDto;
 import com.Sprints.BankManagementSystem.Mapper.TransactionMapper;
 import com.Sprints.BankManagementSystem.Model.Transaction;
 import com.Sprints.BankManagementSystem.Service.Transaction.TransactionService;
+import com.Sprints.BankManagementSystem.exception.DataNotFoundException;
 import org.springframework.stereotype.Service;
 import com.Sprints.BankManagementSystem.DTO.BankAccountDto;
 import com.Sprints.BankManagementSystem.Mapper.AccountMapper;
@@ -18,6 +19,7 @@ import com.Sprints.BankManagementSystem.Repository.BankAccountRepository;
 
 
 import jakarta.transaction.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @Service
 public class BankAccountService implements IBankAccountService{
@@ -43,7 +45,7 @@ public class BankAccountService implements IBankAccountService{
      @Override
     public BankAccountDto getAccountById(Long accountId) {
         BankAccount account = bankAccountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with id " + accountId));
+                .orElseThrow(() -> new DataNotFoundException("Account not found with id " + accountId));
         return AccountMapper.toDTO(account);
     }
 
@@ -64,12 +66,9 @@ public class BankAccountService implements IBankAccountService{
     @Override
     @Transactional
     public BankAccountDto deposit(Long accountId, Double amount) {
-        if (amount == null || amount <= 0) {
-            throw new IllegalArgumentException("Deposit amount must be positive");
-        }
 
         BankAccount account = bankAccountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with id " + accountId));
+                .orElseThrow(() -> new DataNotFoundException("Account not found with id " + accountId));
 
         Double newBalance = account.getBalance() + amount; // account.getBalance() is primitive double, auto-boxed
         account.setBalance(newBalance);
@@ -83,16 +82,14 @@ public class BankAccountService implements IBankAccountService{
         transactionService.createTransaction(dto);
 
         BankAccount updatedAccount = bankAccountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found after update " + accountId));
+                .orElseThrow(() -> new DataNotFoundException("Account not found after update " + accountId));
         return AccountMapper.toDTO(updatedAccount);
     }
 
     @Override
     @Transactional
     public BankAccountDto withdraw(Long accountId, Double amount) {
-        if (amount == null || amount <= 0) {
-            throw new IllegalArgumentException("Withdraw amount must be positive");
-        }
+
 
         BankAccount account = bankAccountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with id " + accountId));
@@ -115,7 +112,7 @@ public class BankAccountService implements IBankAccountService{
         transactionService.createTransaction(dto);
 
         BankAccount updatedAccount = bankAccountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found after update " + accountId));
+                .orElseThrow(() -> new DataNotFoundException("Account not found after update " + accountId));
         return AccountMapper.toDTO(updatedAccount);
     }
 
@@ -131,9 +128,9 @@ public class BankAccountService implements IBankAccountService{
         }
 
         BankAccount sender = bankAccountRepository.findById(transferDto.getSenderAccountId())
-                .orElseThrow(() -> new RuntimeException("Sender account not found: " + transferDto.getSenderAccountId()));
+                .orElseThrow(() -> new DataNotFoundException("Sender account not found: " + transferDto.getSenderAccountId()));
         BankAccount receiver = bankAccountRepository.findById(transferDto.getReceiverAccountId())
-                .orElseThrow(() -> new RuntimeException("Receiver account not found: " + transferDto.getReceiverAccountId()));
+                .orElseThrow(() -> new DataNotFoundException("Receiver account not found: " + transferDto.getReceiverAccountId()));
 
         if (sender.getBalance() < transferDto.getAmount() ) {
             throw new IllegalArgumentException("Insufficient funds in sender account");
@@ -157,12 +154,12 @@ public class BankAccountService implements IBankAccountService{
         transactionService.createTransaction(dto);
 
         BankAccount updatedAccountSender = bankAccountRepository.findById(sender.getAccount_id())
-                .orElseThrow(() -> new RuntimeException("Account not found after update " + sender.getAccount_id()));
+                .orElseThrow(() -> new DataNotFoundException("Account not found after update " + sender.getAccount_id()));
 
         updatedAccountSender.getSentTransactions().add(TransactionMapper.toEntity(dto));
 
         BankAccount updatedAccountReciever = bankAccountRepository.findById(receiver.getAccount_id())
-                .orElseThrow(() -> new RuntimeException("Account not found after update " + receiver.getAccount_id()));
+                .orElseThrow(() -> new DataNotFoundException("Account not found after update " + receiver.getAccount_id()));
 
         updatedAccountReciever.getReceivedTransactions().add(TransactionMapper.toEntity(dto));
 

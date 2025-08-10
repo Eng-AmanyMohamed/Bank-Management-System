@@ -4,6 +4,7 @@ import com.Sprints.BankManagementSystem.DTO.CustomerDto;
 import com.Sprints.BankManagementSystem.Mapper.CustomerMapper;
 import com.Sprints.BankManagementSystem.Model.Customer;
 import com.Sprints.BankManagementSystem.Repository.CustomerRepository;
+import com.Sprints.BankManagementSystem.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public CustomerDto getCustomerById(Long id) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new DataNotFoundException("Customer not found"));
         return customerMapper.toDTO(customer);
     }
 
@@ -46,7 +47,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public CustomerDto updateCustomer(Long id, CustomerDto customerDto) {
         Customer existingCustomer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new DataNotFoundException("Customer not found"));
 
         existingCustomer.setName(customerDto.getName());
         existingCustomer.setEmail(customerDto.getEmail());
@@ -59,7 +60,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public void deleteCustomer(Long id) {
         if (!customerRepository.existsById(id)) {
-            throw new RuntimeException("Customer not found with ID: " + id);
+            throw new DataNotFoundException("Customer not found with ID: " + id);
         }
         customerRepository.deleteById(id);
     }

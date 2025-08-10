@@ -1,9 +1,21 @@
 package com.Sprints.BankManagementSystem.DTO;
 
+import jakarta.validation.constraints.*;
+
 public class CustomerDto {
+
     private Long customer_id;
+
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
     private String name;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
+
+    @NotBlank(message = "password is required")
+    @Size(min = 2, max = 100, message = "password must be more than 8 characters")
     private String password;
     private String phone;
     private String address;
