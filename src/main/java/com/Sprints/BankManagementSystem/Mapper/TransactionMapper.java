@@ -2,7 +2,9 @@ package com.Sprints.BankManagementSystem.Mapper;
 
 import com.Sprints.BankManagementSystem.DTO.TransactionDto;
 import com.Sprints.BankManagementSystem.Model.Transaction;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TransactionMapper {
 
     public static TransactionDto toDTO(Transaction transaction) {
