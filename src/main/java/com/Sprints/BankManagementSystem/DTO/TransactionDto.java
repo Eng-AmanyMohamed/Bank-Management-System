@@ -1,13 +1,19 @@
 package com.Sprints.BankManagementSystem.DTO;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 public class TransactionDto {
+
     private String type;
     private Double amount;
     private LocalDateTime timestamp;
+    @NotNull
     private Long senderAccountId;
+    @NotNull
     private Long receiverAccountId;
+    @NotNull
     private Long customer_id;
     public TransactionDto() {
     }

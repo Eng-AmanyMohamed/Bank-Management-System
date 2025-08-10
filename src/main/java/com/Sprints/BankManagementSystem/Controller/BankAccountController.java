@@ -8,6 +8,8 @@ import com.Sprints.BankManagementSystem.Model.BankAccount;
 import com.Sprints.BankManagementSystem.Service.BankAccount.BankAccountService;
 import com.Sprints.BankManagementSystem.Service.BankAccount.IBankAccountService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -37,12 +39,12 @@ public class BankAccountController {
     }
 
     @PostMapping("/deposit/{id}")
-    public ResponseEntity<BankAccountDto> deposit(@PathVariable Long id,@Valid @RequestBody double amount ){
+    public ResponseEntity<BankAccountDto> deposit(@PathVariable Long id, @RequestBody @NotNull @Min(1) double amount ){
         return ResponseEntity.ok(bankAccountService.deposit(id,amount));
     }
 
     @PostMapping("/withdraw/{id}")
-    public ResponseEntity<BankAccountDto> withdraw(@PathVariable Long id,@Valid @RequestBody double amount ){
+    public ResponseEntity<BankAccountDto> withdraw(@PathVariable Long id, @RequestBody @NotNull @Min(1) double amount ){
         return ResponseEntity.ok(bankAccountService.withdraw(id,amount));
     }
 
