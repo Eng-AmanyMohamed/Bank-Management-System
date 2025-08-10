@@ -72,13 +72,11 @@ public class BankAccountService implements IBankAccountService{
                 .orElseThrow(() -> new RuntimeException("Account not found with id " + accountId));
 
         Double newBalance = account.getBalance() + amount; // account.getBalance() is primitive double, auto-boxed
-        int updated = bankAccountRepository.updateAccountBalance(accountId, newBalance);
-        if (updated == 0) {
-            throw new RuntimeException("Failed to update balance for account " + accountId);
-        }
+        account.setBalance(newBalance);
+        bankAccountRepository.save(account);
 
         TransactionDto dto = new TransactionDto();
-        dto.setCustomer_id(account.getAccount_id());
+        dto.setCustomer_id(account.getCustomer().getCustomer_id());
         dto.setAmount(amount);
         dto.setType("deposit");
         dto.setTimestamp(LocalDateTime.now());
@@ -110,7 +108,7 @@ public class BankAccountService implements IBankAccountService{
         }
 
         TransactionDto dto = new TransactionDto();
-        dto.setCustomer_id(account.getAccount_id());
+        dto.setCustomer_id(account.getCustomer().getCustomer_id());
         dto.setAmount(amount);
         dto.setType("withdraw");
         dto.setTimestamp(LocalDateTime.now());
@@ -168,7 +166,7 @@ public class BankAccountService implements IBankAccountService{
 
         updatedAccountReciever.getReceivedTransactions().add(TransactionMapper.toEntity(dto));
 
-        transactionService.createTransaction(dto);
+
 
 
         return AccountMapper.toDTO(updatedAccountSender);

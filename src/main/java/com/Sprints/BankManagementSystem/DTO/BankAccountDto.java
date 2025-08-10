@@ -9,11 +9,11 @@ public class BankAccountDto {
     private String account_type;
     private double balance;
     private LocalDateTime created_at;
-    private String customer_id;
+    private int customer_id;
     public BankAccountDto() {
     }
 
-    public BankAccountDto(Long account_id, int account_number, String account_type, double balance, LocalDateTime created_at, String customer_name) {
+    public BankAccountDto(Long account_id, int account_number, String account_type, double balance, LocalDateTime created_at, int customer_id) {
         this.account_id = account_id;
         this.account_number = account_number;
         this.account_type = account_type;
@@ -26,8 +26,8 @@ public class BankAccountDto {
         this.account_id = account_id;
     }
 
-    public void setCustomer_name(String customer_name) {
-        this.customer_id = customer_name;
+    public void setCustomer_id(int customer_name) {
+        this.customer_id = customer_id;
     }
 
     public void setAccount_number(int account_number) {
@@ -66,7 +66,7 @@ public class BankAccountDto {
         return created_at;
     }
 
-    public String getCustomer_name() {
+    public int getCustomer_id() {
         return customer_id;
     }
 }
