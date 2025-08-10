@@ -1,7 +1,9 @@
 package com.Sprints.BankManagementSystem.Configration;
 
 import com.Sprints.BankManagementSystem.exception.ConflictException;
+import com.Sprints.BankManagementSystem.exception.CustomErrorResponse;
 import com.Sprints.BankManagementSystem.exception.DataNotFoundException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -30,8 +32,21 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(DataNotFoundException.class)
-    public ResponseEntity<String> HandleNotFoundException(DataNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ResponseEntity<CustomErrorResponse> HandleNotFoundException(DataNotFoundException ex) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Error-Code", "DATA_NOT_FOUND");
+        headers.add("X-Timestamp", java.time.ZonedDateTime.now().toString());
+
+        CustomErrorResponse body = new CustomErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                ex.getMessage(),
+                java.time.ZonedDateTime.now().toString()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .headers(headers)
+                .body(body);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
