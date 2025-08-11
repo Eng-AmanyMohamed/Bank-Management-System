@@ -109,7 +109,7 @@ mvn spring-boot:run
 ```
 ---
 ## 📍 API Endpoints
-- Customer
+**Customer**
 ```
 POST /customers	               #Create a customer
 GET	 /customers	               #List all customers
@@ -119,7 +119,7 @@ DELETE	/customers/{id}	       #Delete customer
 GET	 /customers/email/{email}	 #Find by email
 ```
 
-- Bank Account
+**Bank Account**
 ```
 POST	/accounts	                  #Create account
 GET	 /accounts/{id}	              #Get account by ID
@@ -129,7 +129,7 @@ POST	/accounts/deposit	          #Deposit money
 POST	/accounts/withdraw	        #Withdraw money
 POST	/accounts/transfer	        #Transfer between accounts
 ```
-- Transaction
+**Transaction**
 ```
 GET	/transactions/account/{accountId} 	#Get transactions by account
 DELETE	/transactions/{id}	            #Delete transaction
