@@ -84,6 +84,7 @@ bankmanagementsystem/
 - **MySQL**
 - **ModelMapper**
 - **Maven**
+- **Postman**(Testing APIs)
 
 ---
 
